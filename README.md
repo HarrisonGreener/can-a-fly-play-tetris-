@@ -5,7 +5,7 @@
 # Can a fly play Tetris?
 
 **I gave a fruit fly a keyboard.**<br/>
-318 real neurons from a mapped fly brain. A real fly body. An old box computer in a white concrete bunker.<br/>
+318 real neurons from a mapped fly brain. A real fly body. An old box computer.<br/>
 Nothing is trained. It plays badly.
 
 [![Watch it play](https://img.shields.io/badge/▶_watch_it_play-live_demo-d6241c?style=for-the-badge)](https://harrisongreener.github.io/can-a-fly-play-tetris-/)
@@ -33,7 +33,7 @@ That's the whole experiment. The fly's **brain** is a 318-neuron slice of the [M
     <td width="50%"><img src="docs/screenshots/screen.jpg" alt="Over-the-shoulder shot of the fly watching Tetris on a CRT monitor" /></td>
   </tr>
   <tr>
-    <td align="center"><sub><b>The bunker.</b> White concrete, strip lights, one black desk.</sub></td>
+    <td align="center"><sub><b>The setup.</b> One black desk, one old computer, one fly.</sub></td>
     <td align="center"><sub><b>Over the shoulder.</b> The game runs live on the CRT.</sub></td>
   </tr>
   <tr>
@@ -104,7 +104,7 @@ js/brain.js                      spiking neuron simulation (LIF)
 js/interface.js                  board → eyes, descending neurons → keys
 js/tetris.js                     the game
 js/fly3d.js                      3D fly: meshes, skeleton, shading, leg IK
-js/world.js                      bunker, desk, computer, keyboard, lights, camera
+js/world.js                      room, desk, computer, keyboard, lights, camera
 js/views.js                      CRT screen drawing, live brain map
 js/main.js                       main loop and HUD
 data/brain-slice.js              318-neuron connectome slice (generated)
