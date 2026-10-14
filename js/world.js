@@ -345,14 +345,14 @@
   // Slow cinematic drift between framed shots; drag to look around, and it
   // picks the drift back up after a pause.
   const SHOTS = [
-    { name: 'wide', pos: [-24, 17, 5.5], target: [2.5, 1.2, 1.4], drift: [3, -2, 0.6] },
+    { name: 'wide', pos: [-46, 33, 11], target: [2.5, 1.2, 0.5], drift: [5, -3, 1] },
     { name: 'hero', pos: [3.4, -4.6, 2.2], target: [0.7, 0.2, 1.0], drift: [0.5, 0.5, 0.15] },
     { name: 'shoulder', pos: [-2.9, -1.5, 2.75], target: [4.1, 1.5, 2.55], drift: [0.4, 0.5, 0.0] },
     { name: 'keys', pos: [2.7, 2.8, 1.4], target: [0.95, -0.05, 0.6], drift: [0.25, -0.35, 0.1] },
     { name: 'low', pos: [-1.5, -9.5, 0.7], target: [2.2, 1.0, 1.6], drift: [1.0, 0.6, 0.0] },
     { name: 'top', pos: [0.2, 0.4, 7.0], target: [1.0, 0.0, 0.4], drift: [0.6, -0.4, -0.5] },
   ];
-  const SCREEN_SHOT = { pos: [0.6, 1.55, 3.05], target: [4.2, 1.6, 3.15], drift: [0.08, 0, 0] };
+  const SCREEN_SHOT = { pos: [-9.5, -0.4, 4.9], target: [3.4, 1.6, 2.0], drift: [0.4, 0.2, 0] };
 
   class Director {
     constructor(world) {
