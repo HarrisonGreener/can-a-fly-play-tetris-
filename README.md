@@ -4,7 +4,7 @@
 
 The fly's brain is **318 real neurons and 13,620 real connections** cut from a fully mapped fruit-fly central nervous system. Its body is an anatomically accurate 3D fly reconstructed from microscope scans. Its eyes watch the falling blocks, signals travel through the real wiring, and its own command neurons decide which arrow key its front legs tap. Nothing is trained or tuned to play well. It plays badly, and that's the point.
 
-▶ **Watch it play:** https://harrygreener01-cloud.github.io/can-a-fly-play-tetris-/
+▶ **Watch it play:** https://harrisongreener.github.io/can-a-fly-play-tetris-/
 
 ## What you're looking at
 
