@@ -37,7 +37,7 @@
       this.controls.enableDamping = true;
       this.controls.dampingFactor = 0.08;
       this.controls.minDistance = 1.5;
-      this.controls.maxDistance = 120;
+      this.controls.maxDistance = 70;
       this.controls.maxPolarAngle = Math.PI * 0.62;
 
       this.buildRoom();
@@ -62,6 +62,9 @@
     buildRoom() {
       const THREE = this.THREE, s = this.scene;
       const FLOOR = -24, CEIL = 30, W = 170, Dp = 120;
+      // Walls the camera must stay inside, and solid boxes it must stay out of.
+      this.bounds = { x0: 10 - W / 2, x1: 10 + W / 2, y0: -Dp / 2, y1: Dp / 2, z0: FLOOR, z1: CEIL };
+      this.solids = [];
       this.floorZ = FLOOR;
       const concrete = concreteTexture(THREE);
       const floor = new THREE.Mesh(
@@ -97,6 +100,7 @@
       const pillarMat = new THREE.MeshStandardMaterial({ color: 0xf0f0ee, roughness: 0.85 });
       const pillarGeo = new THREE.BoxGeometry(4, 4, CEIL - FLOOR);
       for (const x of [-50, -20, 40, 70]) for (const y of [-34, 34]) {
+        this.solids.push({ x0: x - 2, x1: x + 2, y0: y - 2, y1: y + 2, z0: FLOOR, z1: CEIL });
         const p = new THREE.Mesh(pillarGeo, pillarMat);
         p.position.set(x, y, (CEIL + FLOOR) / 2);
         p.castShadow = true; p.receiveShadow = true; s.add(p);
@@ -332,10 +336,38 @@
       this.camera.aspect = r.width / r.height;
       this.camera.updateProjectionMatrix();
     }
+    /** Stop the camera leaving the room or passing through pillars and the desk. */
+    keepCameraInRoom() {
+      const p = this.camera.position, b = this.bounds, m = 1.5;
+      p.x = Math.min(b.x1 - m, Math.max(b.x0 + m, p.x));
+      p.y = Math.min(b.y1 - m, Math.max(b.y0 + m, p.y));
+      p.z = Math.min(b.z1 - m, Math.max(b.z0 + m, p.z));
+      const solids = this.solids.concat([
+        { x0: -8, x1: 14, y0: -5, y1: 8, z0: -0.6, z1: 0 },                  // desk top
+        ...[[-7.2, -4.2], [13.2, -4.2], [-7.2, 7.2], [13.2, 7.2]].map(([x, y]) =>
+          ({ x0: x - 0.35, x1: x + 0.35, y0: y - 0.35, y1: y + 0.35, z0: b.z0, z1: 0 })), // desk legs
+      ]);
+      const pad = 0.8;
+      for (const s of solids) {
+        const lo = [s.x0 - pad, s.y0 - pad, s.z0 - pad], hi = [s.x1 + pad, s.y1 + pad, s.z1 + pad], v = [p.x, p.y, p.z];
+        if (v.every((c, i) => c > lo[i] && c < hi[i])) {
+          // Push out along the axis with the smallest overlap.
+          let best = 0, push = Infinity;
+          for (let i = 0; i < 3; i++) {
+            const a = v[i] - lo[i], c = hi[i] - v[i];
+            if (a < Math.abs(push)) { push = -a; best = i; }
+            if (c < Math.abs(push)) { push = c; best = i; }
+          }
+          v[best] += push;
+          p.set(v[0], v[1], v[2]);
+        }
+      }
+    }
     render(dt) {
       this.animateFly(dt);
       this.director.update(dt);
       this.controls.update();
+      this.keepCameraInRoom();
       this.screenLight.intensity = 5.5 + Math.random() * 0.6;
       this.composer.render();
     }
