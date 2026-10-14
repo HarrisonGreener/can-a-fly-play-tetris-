@@ -24,4 +24,7 @@ SOFTWARE.
 The connectome data in data/brain-slice.js is a subset of MaleCNS v1.0,
 (c) FlyEM / HHMI Janelia, University of Cambridge, MRC LMB, Google Research,
 licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/).
-Portions of js/brain.js are adapted from Xenova/fruit-fly-simulation (MIT).
+The fly body in data/fly-body.js is NeuroMechFly v2 (NeLy-EPFL/flygym),
+licensed under Apache-2.0; see licenses/NeuroMechFly-NOTICE.txt.
+Portions of js/brain.js and js/fly3d.js are adapted from
+Xenova/fruit-fly-simulation (MIT).

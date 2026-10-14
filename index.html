@@ -4,95 +4,107 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Can a Fly Play Tetris?</title>
-  <meta name="description" content="318 real neurons from a fruit fly's brain, wired to a Tetris controller. It plays badly." />
+  <meta name="description" content="A real fruit fly, 318 real neurons from its mapped brain, and an old box computer. It plays badly." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Can a fly play Tetris?</h1>
-    <p class="lede">I gave a fruit fly a controller. Its brain is <strong><span id="count">318</span> real neurons</strong> and <strong><span id="edges">13,620</span> real connections</strong> cut from a mapped fly brain. Nothing is trained. It plays badly.</p>
-  </header>
+  <section class="stage">
+    <canvas id="world" aria-label="3D scene: a fruit fly at an old beige computer in a white concrete room, tapping arrow keys"></canvas>
+    <div id="loading" class="loading">Loading the fly…</div>
 
-  <main class="grid">
-    <section class="panel fly-panel" aria-label="The fly at its desk">
-      <canvas id="scene" class="pixel" aria-label="A pixel-art fruit fly sitting at a desk holding a game controller"></canvas>
+    <div class="title-card">
+      <p class="kicker">Experiment 001</p>
+      <h1>Can a fly<br />play Tetris?</h1>
+      <p class="lede"><b><span id="count">318</span> real neurons</b> and <b><span id="edges">13,620</span> real connections</b> from a mapped fruit-fly brain are at the keyboard. Nothing is trained. It plays badly.</p>
+    </div>
+
+    <aside class="card brain-card" aria-label="Live brain activity">
+      <header><h2>Live brain</h2><span>neural time <b id="ntime">0.0 s</b></span></header>
+      <canvas id="brain"></canvas>
+      <p id="hover" class="hover">Hover a neuron · click to poke it</p>
+      <div class="legend">
+        <span><i class="eye"></i>eyes</span><span><i class="mid"></i>middle brain</span><span><i class="out"></i>key neurons</span><span><i class="fire"></i>firing</span>
+      </div>
+      <h3>Which key wants it most <span id="warm">· warming up</span></h3>
+      <div id="meters"></div>
+      <ul id="log" aria-live="polite"></ul>
+    </aside>
+
+    <div class="card game-card">
       <dl class="stats">
         <div><dt>Score</dt><dd id="score">0</dd></div>
         <div><dt>Lines</dt><dd id="lines">0</dd></div>
         <div><dt>Games</dt><dd id="games">0</dd></div>
         <div><dt>Best</dt><dd id="best">0</dd></div>
       </dl>
-      <div class="presses"><span>Buttons pressed</span><code id="presses"></code></div>
-      <div class="history-wrap">
-        <span>Score per game</span>
-        <canvas id="history"></canvas>
-      </div>
+      <p class="presses">Keys pressed <code id="presses"></code></p>
+      <canvas id="history" aria-label="Score per game"></canvas>
       <div class="controls">
-        <button id="pause">Pause</button>
-        <button id="restart">New game</button>
-        <span class="speed">
-          <button data-speed="1" aria-pressed="true">1×</button>
-          <button data-speed="3" aria-pressed="false">3×</button>
-          <button data-speed="8" aria-pressed="false">8×</button>
-        </span>
+        <div class="seg"><button id="pause">Pause</button><button id="restart">New game</button></div>
+        <div class="seg" aria-label="Speed">
+          <button data-speed="1" aria-pressed="true">1×</button><button data-speed="3" aria-pressed="false">3×</button><button data-speed="8" aria-pressed="false">8×</button>
+        </div>
+        <div class="seg" aria-label="Camera">
+          <button data-cam="auto" aria-pressed="true">Cinematic</button><button data-cam="screen" aria-pressed="false">Screen</button><button data-cam="free" aria-pressed="false">Free</button>
+        </div>
       </div>
-    </section>
-
-    <section class="panel board-panel" aria-label="The game">
-      <div id="board-wrap"><canvas id="board"></canvas></div>
-      <div class="next"><span>Next</span><canvas id="next"></canvas></div>
-    </section>
-
-    <aside class="panel brain-panel" aria-label="Live brain activity">
-      <div class="brain-head">
-        <h2>Live brain</h2>
-        <span class="clock">neural time <b id="ntime">0.0 s</b></span>
-      </div>
-      <canvas id="brain"></canvas>
-      <p id="hover" class="hover">Hover a neuron · click to poke it</p>
-      <div class="legend">
-        <span><i class="eye"></i>eyes (looming detectors)</span>
-        <span><i class="mid"></i>middle brain</span>
-        <span><i class="out"></i>button neurons</span>
-      </div>
-      <h3>Which button wants it most <span id="warm">· warming up…</span></h3>
-      <div id="meters"></div>
-      <ul id="log" aria-live="polite"></ul>
-    </aside>
-  </main>
+    </div>
+  </section>
 
   <section class="about">
     <h2>How it works</h2>
     <div class="cols">
       <div>
-        <h3>The eyes</h3>
-        <p>The input neurons are <b>LC4</b> and <b>LPLC2</b>, the cells a fly uses to spot something about to hit it. The left eye watches the left half of the board and the right eye watches the right. As a block falls it gets "closer" and looms harder. The glow on the board shows what each eye is seeing.</p>
+        <h3>01 · The eyes</h3>
+        <p>The input neurons are <b>LC4</b> and <b>LPLC2</b>, the cells a fly uses to spot something about to hit it. The left eye watches the left half of the board and the right eye watches the right. As a block falls it gets "closer" and looms harder. The faint blue columns on the screen show what each eye is seeing.</p>
       </div>
       <div>
-        <h3>The brain</h3>
-        <p>240 middle-brain neurons are the strongest real links between those eyes and the fly's command neurons. Every weight is a real synapse count. Each neuron is a simple leaky integrate-and-fire model (from Shiu et al., 2024), stepped every 0.1 ms.</p>
+        <h3>02 · The brain</h3>
+        <p>240 middle-brain neurons are the strongest real links between those eyes and the fly's command neurons. Every weight is a real synapse count. Each neuron is a leaky integrate-and-fire model (Shiu et al., 2024), stepped every 0.1 ms.</p>
       </div>
       <div>
-        <h3>The buttons</h3>
-        <p>Four groups of <b>descending neurons</b>, which carry commands from brain to body, are wired to the controller. Turn-left neurons press left, turn-right neurons press right, walk-forward neurons rotate, and escape neurons drop. Whichever group is most unusually active right now presses its button.</p>
+        <h3>03 · The keys</h3>
+        <p>Four groups of <b>descending neurons</b>, which carry commands from brain to body, are wired to the arrow keys. Turn-left cells press ←, turn-right cells press →, walk-forward cells press ↑ to rotate, and escape cells press ↓ to drop. Whichever group is most unusually active presses its key, and the fly's front leg taps it.</p>
       </div>
     </div>
-    <p class="honest">This is a toy, not a science result. The wiring is real, but the mapping from board to eyes and from neurons to buttons is my design. A real fly would just fly away.</p>
+    <p class="honest">This is a toy, not a science result. The wiring and the body are real, but how the board becomes eye input, how neurons become keys, and how the legs move are my design. A real fly would just fly away.</p>
   </section>
 
   <footer>
     <p>Made by Harry Greener · <a href="https://github.com/harrygreener01-cloud/can-a-fly-play-tetris-">source on GitHub</a></p>
-    <p>Connectome data: <a href="https://male-cns.janelia.org/">MaleCNS v1.0</a> by FlyEM / HHMI Janelia, University of Cambridge, MRC LMB and Google Research, used under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, with preprocessing from <a href="https://huggingface.co/spaces/Xenova/fruit-fly-simulation">Xenova/fruit-fly-simulation</a>. Neuron model after <a href="https://www.nature.com/articles/s41586-024-07763-9">Shiu et al., Nature 2024</a>. Tetris is a trademark of The Tetris Company. This is an unaffiliated, non-commercial fan project.</p>
+    <p>Connectome: <a href="https://male-cns.janelia.org/">MaleCNS v1.0</a>, FlyEM / HHMI Janelia, University of Cambridge, MRC LMB, Google Research (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>). Fly body: <a href="https://github.com/NeLy-EPFL/flygym">NeuroMechFly v2</a>, Wang-Chen et al., Nature Methods 2024 (Apache-2.0). Preprocessing, kinematics and surface shading adapted from <a href="https://huggingface.co/spaces/Xenova/fruit-fly-simulation">Xenova/fruit-fly-simulation</a> (MIT). Neuron model after <a href="https://www.nature.com/articles/s41586-024-07763-9">Shiu et al., Nature 2024</a>. Rendered with <a href="https://threejs.org">three.js</a>. Tetris is a trademark of The Tetris Company. This is an unaffiliated, non-commercial fan project.</p>
   </footer>
 
   <script src="data/brain-slice.js"></script>
+  <script src="data/fly-body.js"></script>
   <script src="js/brain.js"></script>
   <script src="js/tetris.js"></script>
   <script src="js/interface.js"></script>
+  <script src="js/fly3d.js"></script>
+  <script src="js/world.js"></script>
   <script src="js/views.js"></script>
   <script src="js/main.js"></script>
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    } }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+    import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+    window.THREE = THREE;
+    window.THREE_ADDONS = { OrbitControls, RoomEnvironment, RoundedBoxGeometry, EffectComposer, RenderPass, UnrealBloomPass, OutputPass };
+    window.startApp();
+  </script>
 </body>
 </html>
