@@ -22,9 +22,6 @@ h1, h2, h3 { font-weight: 700; margin: 0; letter-spacing: -0.02em; }
 .loading.done { opacity: 0; pointer-events: none; }
 
 .title-card { position: absolute; top: 28px; left: 32px; max-width: 420px; pointer-events: none; }
-.kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 10px; }
-.kicker::before { content: ""; display: inline-block; width: 8px; height: 8px; background: var(--red); border-radius: 50%; margin-right: 8px; animation: rec 1.6s infinite; }
-@keyframes rec { 50% { opacity: 0.2; } }
 h1 { font-size: clamp(40px, 5.4vw, 76px); line-height: 0.92; letter-spacing: -0.045em; }
 .lede { margin: 16px 0 0; font-size: 16px; max-width: 360px; color: #222; }
 .lede b { font-weight: 500; color: var(--ink); }
